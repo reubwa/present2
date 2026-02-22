@@ -9,7 +9,7 @@
     import ToolbarButton from "$lib/components/toolbar/ToolbarButton.svelte";
 	import ToolbarGroup from "$lib/components/toolbar/ToolbarGroup.svelte";
 	import { TransitionModes } from "$lib/structs";
-    import { AccessibilityIcon } from "@lucide/svelte";
+    import { FilePlusCorner, HardDriveDownload, HardDriveUpload, Info, LayersPlus, Presentation, SquareArrowRightExit, SwatchBook } from "@lucide/svelte";
 
     let addSlideModalVisibility = $state(false);
 	let addSlideResponse = $state("");
@@ -30,26 +30,23 @@
 
     let aboutModalVisibility = $state(false);
 </script>
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
 
 <Toolbar>
     <ToolbarGroup>
-        <ToolbarButton caption="Add" icon={AccessibilityIcon} clickEvent={() => {addSlideModalVisibility = true}} iconSize="32"/>
-        <ToolbarButton caption="Theme" icon={AccessibilityIcon} clickEvent={() => {changeThemeModalVisibility = true}} iconSize="32"/>
-        <ToolbarButton caption="New" icon={AccessibilityIcon} clickEvent={() => {newModalVisibility = true}} iconSize="32"/>
+        <ToolbarButton iconSize=32 icon={FilePlusCorner} caption="New" clickEvent={()=>{newModalVisibility=true}}/>
+        <ToolbarButton iconSize=32 icon={HardDriveUpload} caption="Open" clickEvent={()=>{}}/>
+        <ToolbarButton iconSize=32 icon={HardDriveDownload} caption="Save" clickEvent={()=>{}}/>
     </ToolbarGroup>
     <ToolbarGroup>
-        <ToolbarButton caption="Entry" icon={AccessibilityIcon} clickEvent={() => {
-            transitionModal = TransitionModes.Entry;
-            transitionModalVisibility = true;
-        }} iconSize="32"/>
-        <ToolbarButton caption="Exit" icon={AccessibilityIcon} clickEvent={() => {
-            transitionModal = TransitionModes.Exit;
-            transitionModalVisibility = true;
-        }} iconSize="32"/>
-        <ToolbarButton caption="Speed" icon={AccessibilityIcon} clickEvent={() => {transitionSpeedModalVisibility=true}} iconSize="32"/>
-        <ToolbarButton caption="About" icon={AccessibilityIcon} clickEvent={() => {aboutModalVisibility=true}} iconSize="32"/>
+        <ToolbarButton iconSize=32 icon={LayersPlus} caption="Add Slide" clickEvent={()=>{addSlideModalVisibility=true}}/>
+        <ToolbarButton iconSize=32 icon={SwatchBook} caption="Theme" clickEvent={()=>{changeThemeModalVisibility=true}}/>
+    </ToolbarGroup>
+    <ToolbarGroup>
+        <ToolbarButton iconSize=32 icon={SquareArrowRightExit} caption="Export" clickEvent={()=>{}}/>
+        <ToolbarButton iconSize=32 icon={Presentation} caption="Present" clickEvent={()=>{}}/>
+    </ToolbarGroup>
+    <ToolbarGroup>
+        <ToolbarButton iconSize=32 icon={Info} caption="About" clickEvent={()=>aboutModalVisibility=true}/>
     </ToolbarGroup>
 </Toolbar>
 
@@ -59,15 +56,6 @@
 <TransitionSpeedModal bind:show={transitionSpeedModalVisibility} bind:result={transitionSpeedResponse} />
 <NewPresModal bind:show={newModalVisibility} bind:result={newResponse}/>
 <AboutModal bind:show={aboutModalVisibility} />
-
-<p>{addSlideResponse}</p>
-<p>{changeThemeResponse}</p>
-
-<p>{transitionModal} transition: {transitionResponse}</p>
-
-<p>{transitionSpeedResponse}</p>
-
-<p>{newResponse}</p>
 
 <svelte:head>
     <style>

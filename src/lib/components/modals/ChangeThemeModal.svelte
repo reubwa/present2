@@ -12,7 +12,7 @@
     }
 </script>
 <BaseDialog bind:dialog bind:show>
-    <h1 class="text-white font-bold">Add a Slide</h1>
+    <h1 class="text-white font-bold">Set Theme</h1>
     <div class="flex flex-col gap-2.5">
         <div class="flex flex-row gap-2.5">
             <GalleryButtonThemePreview theme={BuiltInThemes.Beige} clickEvent={()=>{completeDialog(BuiltInThemes.Beige)}}/>
