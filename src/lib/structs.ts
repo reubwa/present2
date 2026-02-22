@@ -35,9 +35,15 @@ export const TransitionSpeeds = {
     Default : "Default",
     Fast : "Fast",
     Slow : "Slow"
-}
+};
+
+export const TransitionModes = {
+    Entry : "Entry",
+    Exit : "Exit"
+};
 
 export type SlideTypes = typeof SlideTypes[keyof typeof SlideTypes];
 export type BuiltInThemes = typeof BuiltInThemes[keyof typeof BuiltInThemes];
 export type Transitions = typeof Transitions[keyof typeof Transitions];
 export type TransitionSpeeds = typeof TransitionSpeeds[keyof typeof TransitionSpeeds];
+export type TransitionModes = typeof TransitionModes[keyof typeof TransitionModes];
