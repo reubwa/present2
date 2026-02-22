@@ -1,6 +1,7 @@
 <script>
 	import AddSlideModal from "$lib/components/modals/AddSlideModal.svelte";
 	import ChangeThemeModal from "$lib/components/modals/ChangeThemeModal.svelte";
+	import NewPresModal from "$lib/components/modals/NewPresModal.svelte";
 	import TransitionModal from "$lib/components/modals/TransitionModal.svelte";
 	import TransitionSpeedModal from "$lib/components/modals/TransitionSpeedModal.svelte";
 	import Toolbar from "$lib/components/toolbar/Toolbar.svelte";
@@ -22,6 +23,9 @@
 
     let transitionSpeedModalVisibility = $state(false);
     let transitionSpeedResponse = $state("");
+
+    let newModalVisibility = $state(false);
+    let newResponse = $state("");
 </script>
 <h1>Welcome to SvelteKit</h1>
 <p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
@@ -30,7 +34,7 @@
     <ToolbarGroup>
         <ToolbarButton caption="Add" icon={AccessibilityIcon} clickEvent={() => {addSlideModalVisibility = true}} iconSize="32"/>
         <ToolbarButton caption="Theme" icon={AccessibilityIcon} clickEvent={() => {changeThemeModalVisibility = true}} iconSize="32"/>
-        <ToolbarButton caption="Test" icon={AccessibilityIcon} clickEvent={() => {}} iconSize="32"/>
+        <ToolbarButton caption="New" icon={AccessibilityIcon} clickEvent={() => {newModalVisibility = true}} iconSize="32"/>
     </ToolbarGroup>
     <ToolbarGroup>
         <ToolbarButton caption="Entry" icon={AccessibilityIcon} clickEvent={() => {
@@ -49,6 +53,7 @@
 <ChangeThemeModal bind:show={changeThemeModalVisibility} bind:result={changeThemeResponse} />
 <TransitionModal bind:show={transitionModalVisibility} bind:result={transitionResponse} bind:mode={transitionModal}/>
 <TransitionSpeedModal bind:show={transitionSpeedModalVisibility} bind:result={transitionSpeedResponse} />
+<NewPresModal bind:show={newModalVisibility} bind:result={newResponse}/>
 
 <p>{addSlideResponse}</p>
 <p>{changeThemeResponse}</p>
@@ -56,6 +61,8 @@
 <p>{transitionModal} transition: {transitionResponse}</p>
 
 <p>{transitionSpeedResponse}</p>
+
+<p>{newResponse}</p>
 
 <svelte:head>
     <style>
