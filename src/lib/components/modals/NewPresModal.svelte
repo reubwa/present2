@@ -9,7 +9,7 @@
 <BaseDialog bind:dialog bind:show>
     <h1 class="text-white font-bold">New Presentation</h1>
     <form class="flex flex-row gap-2.5" onsubmit={(e) => show = false}>
-        <input type="text" bind:value={result} placeholder="Presentation Name" class="text-[25px] ml-1.25"/>
+        <input type="text" bind:value={result} placeholder="Presentation Name" class="text-[25px] ml-1.25 text-[lightblue]"/>
         <button class="border-none rounded-[10px] text-white p-2.5" type="submit"><SquareArrowRightExitIcon/></button>
     </form>
 </BaseDialog>

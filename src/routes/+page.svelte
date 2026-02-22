@@ -1,4 +1,5 @@
 <script>
+	import AboutModal from "$lib/components/modals/AboutModal.svelte";
 	import AddSlideModal from "$lib/components/modals/AddSlideModal.svelte";
 	import ChangeThemeModal from "$lib/components/modals/ChangeThemeModal.svelte";
 	import NewPresModal from "$lib/components/modals/NewPresModal.svelte";
@@ -26,6 +27,8 @@
 
     let newModalVisibility = $state(false);
     let newResponse = $state("");
+
+    let aboutModalVisibility = $state(false);
 </script>
 <h1>Welcome to SvelteKit</h1>
 <p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
@@ -46,6 +49,7 @@
             transitionModalVisibility = true;
         }} iconSize="32"/>
         <ToolbarButton caption="Speed" icon={AccessibilityIcon} clickEvent={() => {transitionSpeedModalVisibility=true}} iconSize="32"/>
+        <ToolbarButton caption="About" icon={AccessibilityIcon} clickEvent={() => {aboutModalVisibility=true}} iconSize="32"/>
     </ToolbarGroup>
 </Toolbar>
 
@@ -54,6 +58,7 @@
 <TransitionModal bind:show={transitionModalVisibility} bind:result={transitionResponse} bind:mode={transitionModal}/>
 <TransitionSpeedModal bind:show={transitionSpeedModalVisibility} bind:result={transitionSpeedResponse} />
 <NewPresModal bind:show={newModalVisibility} bind:result={newResponse}/>
+<AboutModal bind:show={aboutModalVisibility} />
 
 <p>{addSlideResponse}</p>
 <p>{changeThemeResponse}</p>
