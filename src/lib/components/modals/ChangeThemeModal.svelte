@@ -1,6 +1,6 @@
 <script lang="ts">
 	import BaseDialog from "./BaseDialog.svelte";
-    import {BuiltInThemes} from "../structs.ts";
+    import {BuiltInThemes} from "../../structs.ts";
 	import GalleryButtonThemePreview from "./GalleryButtonThemePreview.svelte";
 
 	let {show = $bindable(), result = $bindable()} = $props();

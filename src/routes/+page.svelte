@@ -1,9 +1,9 @@
 <script>
-	import AddSlideModal from "$lib/components/AddSlideModal.svelte";
-	import ChangeThemeModal from "$lib/components/ChangeThemeModal.svelte";
-	import Toolbar from "$lib/components/Toolbar.svelte";
-    import ToolbarButton from "$lib/components/ToolbarButton.svelte";
-	import ToolbarGroup from "$lib/components/ToolbarGroup.svelte";
+	import AddSlideModal from "$lib/components/modals/AddSlideModal.svelte";
+	import ChangeThemeModal from "$lib/components/modals/ChangeThemeModal.svelte";
+	import Toolbar from "$lib/components/toolbar/Toolbar.svelte";
+    import ToolbarButton from "$lib/components/toolbar/ToolbarButton.svelte";
+	import ToolbarGroup from "$lib/components/toolbar/ToolbarGroup.svelte";
     import { AccessibilityIcon } from "@lucide/svelte";
 
     let addSlideModalVisibility = $state(false);
