@@ -42,6 +42,43 @@ export const TransitionModes = {
     Exit : "Exit"
 };
 
+export class SlideContent {
+    type : SlideTypes;
+    strings : string[];
+    constructor(type : SlideTypes){
+        this.type = type;
+        this.strings = [];
+    }
+}
+
+export class Slide {
+    title : string;
+    content : SlideContent;
+    number : number;
+    entryTransition : Transitions;
+    exitTransition : Transitions;
+    transitionSpeeds : TransitionSpeeds;
+    constructor(type : SlideTypes, number : number){
+        this.title = "";
+        this.content = new SlideContent(type);
+        this.number = number;
+        this.entryTransition = Transitions.None;
+        this.exitTransition = Transitions.None;
+        this.transitionSpeeds = TransitionSpeeds.Default;
+    }
+}
+
+export class Presentation {
+    title : string;
+    slides : Slide[];
+    theme : BuiltInThemes;
+    constructor(title : string){
+        this.title = title;
+        this.slides = [];
+        this.theme = BuiltInThemes.White;
+    }
+}
+
 export type SlideTypes = typeof SlideTypes[keyof typeof SlideTypes];
 export type BuiltInThemes = typeof BuiltInThemes[keyof typeof BuiltInThemes];
 export type Transitions = typeof Transitions[keyof typeof Transitions];
