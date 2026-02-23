@@ -1,7 +1,7 @@
 <script lang="ts">
   let { children } = $props();
 </script>
-<div class="rounded-[10px] w-[73%] h-full p-2.5">
+<div class="rounded-[10px] min-w-[75%] max-w-[75%] h-full p-2.5">
     {@render children?.()}
 </div>
 <style>

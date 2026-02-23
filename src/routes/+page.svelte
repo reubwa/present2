@@ -1,8 +1,12 @@
 <script>
+	import BodySplit from "$lib/components/body/BodySplit.svelte";
+	import BaseEditor from "$lib/components/body/editors/BaseEditor.svelte";
+	import Inspector from "$lib/components/inspector/Inspector.svelte";
 	import AboutModal from "$lib/components/modals/AboutModal.svelte";
 	import AddSlideModal from "$lib/components/modals/AddSlideModal.svelte";
 	import ChangeThemeModal from "$lib/components/modals/ChangeThemeModal.svelte";
 	import NewPresModal from "$lib/components/modals/NewPresModal.svelte";
+	import Sidebar from "$lib/components/sidebar/Sidebar.svelte";
 
 	import Toolbar from "$lib/components/toolbar/Toolbar.svelte";
     import ToolbarButton from "$lib/components/toolbar/ToolbarButton.svelte";
@@ -44,6 +48,13 @@
 <ChangeThemeModal bind:show={changeThemeModalVisibility} bind:result={changeThemeResponse} />
 <NewPresModal bind:show={newModalVisibility} bind:result={newResponse}/>
 <AboutModal bind:show={aboutModalVisibility} />
+<Inspector/>
+<BodySplit>
+    <Sidebar/>
+    <BaseEditor>
+        <p>Edit Area</p>
+    </BaseEditor>
+</BodySplit>
 
 <svelte:head>
     <style>

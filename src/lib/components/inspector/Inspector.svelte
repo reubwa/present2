@@ -1,38 +1,41 @@
 <script lang="ts">
-    let {entryTransition = $bindable(), exitTransition = $bindable()} = $props();
+    let {entryTransition = $bindable(), exitTransition = $bindable(), transitionSpeed = $bindable()} = $props();
     import TransitionModal from "$lib/components/modals/TransitionModal.svelte";
 	import TransitionSpeedModal from "$lib/components/modals/TransitionSpeedModal.svelte";
 	import { TransitionModes } from "$lib/structs";
-	import { DoorOpen, Download, Import, Layers2, PanelTopClose, PanelTopOpen, Theater, Trash2 } from "@lucide/svelte";
+	import { CircleGauge, DoorOpen, FileDown, FileUp, Layers2, PanelTopClose, PanelTopOpen, Theater, Trash2 } from "@lucide/svelte";
 
     let transitionModalVisibility = $state(false);
 
     let transitionModal = $state(TransitionModes.Entry);
 
     let transitionSpeedModalVisibility = $state(false);
-    let transitionSpeedResponse = $state("");
 </script>
-<div class="flex flex-col rounded-[10px] p-2.5 gap-2.5 text-white">
+<div class="flex flex-col rounded-[10px] p-2.5 gap-2.5 text-white ml-1.25 mt-2 max-w-[48.5%]">
     <div class="flex flex-row gap-2.5">
-        <button title="Entry Transition" onclick={()=>{
+        <button title="Entry Transition" class="flex flex-row gap-2.5" onclick={()=>{
             transitionModal = TransitionModes.Entry;
             transitionModalVisibility = true;
         }}>
             <Theater/>
+            <p>{entryTransition}</p>
         </button>
-        <button title="Entry Transition" onclick={()=>{
+        <button title="Entry Transition" class="flex flex-row gap-2.5" onclick={()=>{
             transitionModal = TransitionModes.Exit;
             transitionModalVisibility = true;
         }}>
             <DoorOpen/>
+            <p>{exitTransition}</p>
         </button>
-    </div>
-    <div class="flex flex-row gap-2.5 flex-wrap">
-        <button title="Import" onclick={()=>{}}>
-            <Import/>
+        <button title="Transition Speed" class="flex flex-row gap-2.5" onclick={()=>{transitionSpeedModalVisibility=true}}>
+            <CircleGauge/>
+            <p>{transitionSpeed}</p>
         </button>
-        <button title="Export" onclick={()=>{}}>
-            <Download/>
+        <button title="Import Slide" onclick={()=>{}}>
+            <FileUp/>
+        </button>
+        <button title="Export Slide" onclick={()=>{}}>
+            <FileDown/>
         </button>
         <button title="Move Slide Up" onclick={()=>{}}>
             <PanelTopClose/>
@@ -62,7 +65,7 @@
     } 
     bind:mode={transitionModal}
 />
-<TransitionSpeedModal bind:show={transitionSpeedModalVisibility} bind:result={transitionSpeedResponse} />
+<TransitionSpeedModal bind:show={transitionSpeedModalVisibility} bind:result={transitionSpeed} />
 <style>
     div {
         background-color: rgb(26, 42, 42);
