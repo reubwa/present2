@@ -58,10 +58,10 @@ export class Slide {
     entryTransition : Transitions;
     exitTransition : Transitions;
     transitionSpeeds : TransitionSpeeds;
-    constructor(type : SlideTypes, number : number){
+    constructor(type : SlideTypes){
         this.title = "";
         this.content = new SlideContent(type);
-        this.number = number;
+        this.number = 0;
         this.entryTransition = Transitions.None;
         this.exitTransition = Transitions.None;
         this.transitionSpeeds = TransitionSpeeds.Default;
@@ -76,6 +76,13 @@ export class Presentation {
         this.title = title;
         this.slides = [];
         this.theme = BuiltInThemes.White;
+    }
+    addSlide(slide : Slide){
+        slide.number = this.slides.length + 1;
+        this.slides.push(slide);
+    }
+    removeSlide(index : number){
+        this.slides.splice(index,1);
     }
 }
 
