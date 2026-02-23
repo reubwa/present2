@@ -8,7 +8,6 @@
 	import Toolbar from "$lib/components/toolbar/Toolbar.svelte";
     import ToolbarButton from "$lib/components/toolbar/ToolbarButton.svelte";
 	import ToolbarGroup from "$lib/components/toolbar/ToolbarGroup.svelte";
-	import { TransitionModes } from "$lib/structs";
     import { FilePlusCorner, HardDriveDownload, HardDriveUpload, Info, LayersPlus, Presentation, SquareArrowRightExit, SwatchBook } from "@lucide/svelte";
 
     let addSlideModalVisibility = $state(false);

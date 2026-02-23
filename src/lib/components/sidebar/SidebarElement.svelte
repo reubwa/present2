@@ -2,9 +2,9 @@
 	import { SlideTypes } from "$lib/structs";
 	import { AArrowDownIcon, BookTextIcon, Code, Image, ListIcon, SquareSigmaIcon } from "@lucide/svelte";
 
-  let { selected = $bindable(), name, type } = $props();
+  let { selected, name, type, onclick } = $props();
 </script>
-<div class={selected ? 'div-nsel' : 'div-sel'}>
+<div class={selected ? 'div-sel' : 'div-nsel'} onclick={onclick}>
     {#if type == SlideTypes.TextBullets}
         <ListIcon/>
     {:else if type == SlideTypes.TitleSubtitle}

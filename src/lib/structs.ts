@@ -1,3 +1,4 @@
+
 export const SlideTypes = {
     TextBullets : "Text and Bullet Points",
     TitleSubtitle : "Title and Subtitle",
@@ -83,6 +84,18 @@ export class Presentation {
     }
     removeSlide(index : number){
         this.slides.splice(index,1);
+    }
+}
+
+export function getIcon(slide_type : SlideTypes): string{
+    switch(slide_type){
+        case SlideTypes.TextBullets : return 'ListIcon';
+        case SlideTypes.TitleSubtitle : return 'BookTextIcon';
+        case SlideTypes.Markdown : return 'AArrowDownIcon';
+        case SlideTypes.Image : return 'Image';
+        case SlideTypes.Maths : return 'SquareSigmaIcon';
+        case SlideTypes.Code : return 'Code';
+        default : return '';
     }
 }
 
