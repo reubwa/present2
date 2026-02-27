@@ -46,8 +46,11 @@ export const TransitionModes = {
 export class SlideContent {
     type : SlideTypes;
     strings : string[] = $state([]);
-    constructor(type : SlideTypes){
+    constructor(type : SlideTypes, strings?: string[]){
         this.type = type;
+        if (strings) {
+            this.strings = strings;
+        }
     }
 }
 
@@ -58,8 +61,22 @@ export class Slide {
 	entryTransition: Transitions = $state(Transitions.None);
 	exitTransition: Transitions = $state(Transitions.None);
 	transitionSpeeds: TransitionSpeeds = $state(TransitionSpeeds.Default);
-	constructor(type: SlideTypes) {
+	constructor(
+		type: SlideTypes,
+		title?: string,
+		content?: SlideContent,
+		number?: number,
+		entryTransition?: Transitions,
+		exitTransition?: Transitions,
+		transitionSpeeds?: TransitionSpeeds
+	) {
 		this.content = new SlideContent(type);
+		if (title !== undefined) this.title = title;
+		if (content !== undefined) this.content = content;
+		if (number !== undefined) this.number = number;
+		if (entryTransition !== undefined) this.entryTransition = entryTransition;
+		if (exitTransition !== undefined) this.exitTransition = exitTransition;
+		if (transitionSpeeds !== undefined) this.transitionSpeeds = transitionSpeeds;
 	}
 }
 
@@ -67,8 +84,10 @@ export class Presentation {
     title : string;
     slides : Slide[] = $state([]);
     theme : BuiltInThemes = $state(BuiltInThemes.White);
-    constructor(title : string){
+    constructor(title : string, theme?: BuiltInThemes, slides?: Slide[]){
         this.title = title;
+        if (theme !== undefined) this.theme = theme;
+        if (slides !== undefined) this.slides = slides;
     }
     addSlide(slide : Slide){
         slide.number = this.slides.length + 1;

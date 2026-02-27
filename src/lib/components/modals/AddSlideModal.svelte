@@ -4,11 +4,12 @@
 	import GalleryButton from "./GalleryButton.svelte";
   import { Slide, SlideTypes } from '../../structs.svelte.ts';
 
-	let {show = $bindable(), presentation = $bindable()} = $props();
+	let {show = $bindable(), presentation = $bindable(), selectedSlide = $bindable()} = $props();
 	let dialog: HTMLDialogElement | undefined = $state();
 
     function completeDialog(slidetype : SlideTypes){
         presentation.addSlide(new Slide(slidetype));
+        selectedSlide = presentation.slides.length - 1;
         show = false;
     }
 </script>
