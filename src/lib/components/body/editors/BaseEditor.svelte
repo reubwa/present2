@@ -1,11 +1,12 @@
 <script lang="ts">
   import { SlideTypes } from '../../../structs.svelte.ts';
+  import TitleSubtitleEditor from '$lib/components/body/editors/TitleSubtitleEditor.svelte';
 
   let { slides = $bindable(), selectedIndex = $bindable() } = $props();
 </script>
 <div class="rounded-[10px] min-w-[82%] max-w-[82%] h-full p-2.5">
     {#if slides[selectedIndex].content.type === SlideTypes.TitleSubtitle}
-        <!---placeholder--->
+        <TitleSubtitleEditor bind:title={slides[selectedIndex].title} bind:subtitle={slides[selectedIndex].content.strings[1]}/>
     {:else if slides[selectedIndex].content.type === SlideTypes.Markdown}
         <p>Markdown</p>
     {:else if slides[selectedIndex].content.type === SlideTypes.Code}

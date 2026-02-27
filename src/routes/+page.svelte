@@ -15,7 +15,6 @@
   import { Presentation, Slide, SlideTypes } from '../lib/structs.svelte.ts';
 
     let addSlideModalVisibility = $state(false);
-	  let addSlideResponse = $state("");
 
     let changeThemeModalVisibility = $state(false);
 
@@ -34,8 +33,6 @@
         document.title = currentPres.title;
     });
 </script>
-
-<title>{currentPres.title}</title>
 
 <Toolbar>
     <ToolbarGroup>

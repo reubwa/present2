@@ -5,7 +5,7 @@
 <div class="flex flex-col rounded-[10px] p-2.5 gap-2.5 max-w-[15%] min-w-[15%] text-white">
     {#each slides as slide, i (i)}
         <SidebarElement 
-            name={slide.title} 
+            bind:name={slide.title}
             type={slide.content.type} 
             selected={selectedIndex === i}
             onclick={() => selectedIndex = i}

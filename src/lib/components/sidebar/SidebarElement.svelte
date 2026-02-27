@@ -2,7 +2,7 @@
 	import { SlideTypes } from '../../structs.svelte.ts';
 	import { AArrowDownIcon, BookTextIcon, Code, Image, ListIcon, SquareSigmaIcon } from "@lucide/svelte";
 
-  let { selected, name, type, onclick } = $props();
+  let { selected, name = $bindable(), type, onclick } = $props();
 </script>
 <div class={selected ? 'div-sel' : 'div-nsel'} onclick={onclick}>
     {#if type == SlideTypes.TextBullets}
