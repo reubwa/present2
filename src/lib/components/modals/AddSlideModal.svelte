@@ -2,7 +2,7 @@
 	import { ListIcon, BookTextIcon, AArrowDownIcon, Image, SquareSigmaIcon, Code } from "@lucide/svelte";
 	import BaseDialog from "./BaseDialog.svelte";
 	import GalleryButton from "./GalleryButton.svelte";
-    import {SlideTypes} from "../../structs.ts";
+    import {SlideTypes} from "../../structs.svelte.ts";
 
 	let {show = $bindable(), result = $bindable()} = $props();
 	let dialog: HTMLDialogElement | undefined = $state();

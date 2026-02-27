@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { SlideTypes } from "$lib/structs";
+	import { SlideTypes } from '../../structs.svelte.ts';
 	import { AArrowDownIcon, BookTextIcon, Code, Image, ListIcon, SquareSigmaIcon } from "@lucide/svelte";
 
   let { selected, name, type, onclick } = $props();

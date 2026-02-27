@@ -1,7 +1,7 @@
 <script lang="ts">
 	import BaseDialog from "./BaseDialog.svelte";
 	import GalleryButton from "./GalleryButton.svelte";
-    import {TransitionModes, Transitions} from "../../structs.ts";
+    import {TransitionModes, Transitions} from "../../structs.svelte.ts";
 	import { LensConcaveIcon, LensConvexIcon, PanelRightCloseIcon, SearchIcon, StarOffIcon, TurtleIcon } from "@lucide/svelte";
 
 	let {show = $bindable(), result = $bindable(), mode = $bindable()} = $props();

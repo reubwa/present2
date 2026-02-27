@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { SlideTypes } from '../../../structs.ts';
+  import { SlideTypes } from '../../../structs.svelte.ts';
 
   let { slides = $bindable(), selectedIndex = $bindable() } = $props();
 </script>

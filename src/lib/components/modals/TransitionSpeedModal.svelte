@@ -2,7 +2,7 @@
 	import { CircleSlash2Icon, RabbitIcon, TurtleIcon } from "@lucide/svelte";
 	import BaseDialog from "./BaseDialog.svelte";
 	import GalleryButton from "./GalleryButton.svelte";
-    import {TransitionSpeeds} from "../../structs.ts";
+    import {TransitionSpeeds} from "../../structs.svelte.ts";
 
 	let {show = $bindable(), result = $bindable()} = $props();
 	let dialog: HTMLDialogElement | undefined = $state();

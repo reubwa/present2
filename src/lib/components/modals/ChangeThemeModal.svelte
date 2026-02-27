@@ -1,9 +1,9 @@
 <script lang="ts">
 	import BaseDialog from "./BaseDialog.svelte";
-    import {BuiltInThemes} from "../../structs.ts";
+    import {BuiltInThemes} from "../../structs.svelte.ts";
 	import GalleryButtonThemePreview from "./GalleryButtonThemePreview.svelte";
 
-	let {show = $bindable(), result = $bindable()} = $props();
+	let {show = $bindable(), result = $bindable(), currentTheme = $bindable()} = $props();
 	let dialog: HTMLDialogElement | undefined = $state();
 
     function completeDialog(theme : BuiltInThemes){
@@ -15,24 +15,24 @@
     <h1 class="text-white font-bold">Set Theme</h1>
     <div class="flex flex-col gap-2.5">
         <div class="flex flex-row gap-2.5">
-            <GalleryButtonThemePreview theme={BuiltInThemes.Beige} clickEvent={()=>{completeDialog(BuiltInThemes.Beige)}}/>
-            <GalleryButtonThemePreview theme={BuiltInThemes.Blood} clickEvent={()=>{completeDialog(BuiltInThemes.Blood)}}/>
-            <GalleryButtonThemePreview theme={BuiltInThemes.Black} clickEvent={()=>{completeDialog(BuiltInThemes.Black)}}/>
+            <GalleryButtonThemePreview selected={currentTheme===BuiltInThemes.Beige} theme={BuiltInThemes.Beige} clickEvent={()=>{completeDialog(BuiltInThemes.Beige)}}/>
+            <GalleryButtonThemePreview selected={currentTheme===BuiltInThemes.Blood} theme={BuiltInThemes.Blood} clickEvent={()=>{completeDialog(BuiltInThemes.Blood)}}/>
+            <GalleryButtonThemePreview selected={currentTheme===BuiltInThemes.Black} theme={BuiltInThemes.Black} clickEvent={()=>{completeDialog(BuiltInThemes.Black)}}/>
         </div>
         <div class="flex flex-row gap-2.5">
-            <GalleryButtonThemePreview theme={BuiltInThemes.League} clickEvent={()=>{completeDialog(BuiltInThemes.League)}}/>
-            <GalleryButtonThemePreview theme={BuiltInThemes.Moon} clickEvent={()=>{completeDialog(BuiltInThemes.Moon)}}/>
-            <GalleryButtonThemePreview theme={BuiltInThemes.Night} clickEvent={()=>{completeDialog(BuiltInThemes.Night)}}/>
+            <GalleryButtonThemePreview selected={currentTheme===BuiltInThemes.League} theme={BuiltInThemes.League} clickEvent={()=>{completeDialog(BuiltInThemes.League)}}/>
+            <GalleryButtonThemePreview selected={currentTheme===BuiltInThemes.Moon} theme={BuiltInThemes.Moon} clickEvent={()=>{completeDialog(BuiltInThemes.Moon)}}/>
+            <GalleryButtonThemePreview selected={currentTheme===BuiltInThemes.Night} theme={BuiltInThemes.Night} clickEvent={()=>{completeDialog(BuiltInThemes.Night)}}/>
         </div>
         <div class="flex flex-row gap-2.5">
-            <GalleryButtonThemePreview theme={BuiltInThemes.Serif} clickEvent={()=>{completeDialog(BuiltInThemes.Serif)}}/>
-            <GalleryButtonThemePreview theme={BuiltInThemes.Simple} clickEvent={()=>{completeDialog(BuiltInThemes.Simple)}}/>
-            <GalleryButtonThemePreview theme={BuiltInThemes.Sky} clickEvent={()=>{completeDialog(BuiltInThemes.Sky)}}/>
+            <GalleryButtonThemePreview selected={currentTheme===BuiltInThemes.Serif} theme={BuiltInThemes.Serif} clickEvent={()=>{completeDialog(BuiltInThemes.Serif)}}/>
+            <GalleryButtonThemePreview selected={currentTheme===BuiltInThemes.Simple} theme={BuiltInThemes.Simple} clickEvent={()=>{completeDialog(BuiltInThemes.Simple)}}/>
+            <GalleryButtonThemePreview selected={currentTheme===BuiltInThemes.Sky} theme={BuiltInThemes.Sky} clickEvent={()=>{completeDialog(BuiltInThemes.Sky)}}/>
         </div>
         <div class="flex flex-row gap-2.5">
-            <GalleryButtonThemePreview theme={BuiltInThemes.Solarized} clickEvent={()=>{completeDialog(BuiltInThemes.Solarized)}}/>
-            <GalleryButtonThemePreview theme={BuiltInThemes.White} clickEvent={()=>{completeDialog(BuiltInThemes.White)}}/>
-            <GalleryButtonThemePreview theme={BuiltInThemes.Dracula} clickEvent={()=>{completeDialog(BuiltInThemes.Dracula)}}/>
+            <GalleryButtonThemePreview selected={currentTheme===BuiltInThemes.Solarized} theme={BuiltInThemes.Solarized} clickEvent={()=>{completeDialog(BuiltInThemes.Solarized)}}/>
+            <GalleryButtonThemePreview selected={currentTheme===BuiltInThemes.White} theme={BuiltInThemes.White} clickEvent={()=>{completeDialog(BuiltInThemes.White)}}/>
+            <GalleryButtonThemePreview selected={currentTheme===BuiltInThemes.Dracula} theme={BuiltInThemes.Dracula} clickEvent={()=>{completeDialog(BuiltInThemes.Dracula)}}/>
         </div>
     </div>
 </BaseDialog>

@@ -4,7 +4,7 @@
     let {entryTransition = $bindable(), exitTransition = $bindable(), transitionSpeed = $bindable(), slides = $bindable(), selectedSlide = $bindable()} = $props();
     import TransitionModal from "$lib/components/modals/TransitionModal.svelte";
 	import TransitionSpeedModal from "$lib/components/modals/TransitionSpeedModal.svelte";
-	import { TransitionModes } from "$lib/structs";
+	import { TransitionModes } from '../../structs.svelte.ts';
 	import { CircleGauge, DoorOpen, FileDown, FileUp, Layers2, PanelTopClose, PanelTopOpen, Theater, Trash2 } from "@lucide/svelte";
 
     let transitionModalVisibility = $state(false);
@@ -40,11 +40,13 @@
             <FileDown/>
         </button>
         <button title="Move Slide Up" onclick={()=>{
+            selectedSlide.number -= 1;
             arrayMoveMutable(slides, selectedSlide, selectedSlide-=1);
         }}>
             <PanelTopClose/>
         </button>
         <button title="Move Slide Down" onclick={()=>{
+            selectedSlide.number += 1;
             arrayMoveMutable(slides, selectedSlide, selectedSlide+=1);
         }}>
             <PanelTopOpen/>

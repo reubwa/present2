@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import BodySplit from "$lib/components/body/BodySplit.svelte";
 	import BaseEditor from "$lib/components/body/editors/BaseEditor.svelte";
 	import Inspector from "$lib/components/inspector/Inspector.svelte";
@@ -11,58 +11,31 @@
 	import Toolbar from "$lib/components/toolbar/Toolbar.svelte";
     import ToolbarButton from "$lib/components/toolbar/ToolbarButton.svelte";
 	import ToolbarGroup from "$lib/components/toolbar/ToolbarGroup.svelte";
-    import { FilePlusCorner, HardDriveDownload, HardDriveUpload, Info, LayersPlus, Presentation, SquareArrowRightExit, SwatchBook } from "@lucide/svelte";
-  import { SlideTypes, Transitions, TransitionSpeeds } from '../lib/structs.ts';
+    import { FilePlusCorner, HardDriveDownload, HardDriveUpload, Info, LayersPlus, PresentationIcon, SquareArrowRightExit, SwatchBook } from "@lucide/svelte";
+  import { Presentation, Slide, SlideTypes } from '../lib/structs.svelte.ts';
 
     let addSlideModalVisibility = $state(false);
 	  let addSlideResponse = $state("");
 
     let changeThemeModalVisibility = $state(false);
-    let changeThemeResponse = $state("");
 
     let newModalVisibility = $state(false);
-    let newResponse = $state("");
 
     let aboutModalVisibility = $state(false);
 
     let selectedSlide = $state(0);
 
-    let Slides = $state([
-        {
-            title: "Slide 1",
-            number: 1,
-            entryTransition: Transitions.None,
-            exitTransition: Transitions.None,
-            transitionSpeeds: TransitionSpeeds.Default,
-            content: {
-                type: SlideTypes.TextBullets,
-                strings: "This is the first slide"
-            }
-        },
-        {
-            title: "Slide 2",
-            number: 2,
-            entryTransition: Transitions.None,
-            exitTransition: Transitions.None,
-            transitionSpeeds: TransitionSpeeds.Default,
-            content: {
-                type: SlideTypes.Markdown,
-                strings: "This is the second slide"
-            }
-        },
-        {
-            title: "Slide 3",
-            number: 3,
-            entryTransition: Transitions.None,
-            exitTransition: Transitions.None,
-            transitionSpeeds: TransitionSpeeds.Default,
-            content: {
-                type: SlideTypes.TextBullets,
-                strings: "This is the third slide"
-            }
+    let currentPres = $state(new Presentation("New Presentation"));
+
+    $effect(()=>{
+        if(currentPres.slides.length < 1){
+            currentPres.slides.push(new Slide(SlideTypes.TitleSubtitle));
         }
-    ]);
+        document.title = currentPres.title;
+    });
 </script>
+
+<title>{currentPres.title}</title>
 
 <Toolbar>
     <ToolbarGroup>
@@ -76,7 +49,7 @@
     </ToolbarGroup>
     <ToolbarGroup>
         <ToolbarButton iconSize=32 icon={SquareArrowRightExit} caption="Export" clickEvent={()=>{}}/>
-        <ToolbarButton iconSize=32 icon={Presentation} caption="Present" clickEvent={()=>{}}/>
+        <ToolbarButton iconSize=32 icon={PresentationIcon} caption="Present" clickEvent={()=>{}}/>
     </ToolbarGroup>
     <ToolbarGroup>
         <ToolbarButton iconSize=32 icon={Info} caption="About" clickEvent={()=>aboutModalVisibility=true}/>
@@ -84,14 +57,16 @@
 </Toolbar>
 
 <AddSlideModal bind:show={addSlideModalVisibility} bind:result={addSlideResponse}/>
-<ChangeThemeModal bind:show={changeThemeModalVisibility} bind:result={changeThemeResponse} />
-<NewPresModal bind:show={newModalVisibility} bind:result={newResponse}/>
+<ChangeThemeModal bind:show={changeThemeModalVisibility} bind:result={currentPres.theme} bind:currentTheme={currentPres.theme} />
+<NewPresModal bind:show={newModalVisibility} bind:presentation={currentPres}/>
 <AboutModal bind:show={aboutModalVisibility} />
-<Inspector bind:slides={Slides} bind:selectedSlide={selectedSlide} bind:entryTransition={Slides[selectedSlide].entryTransition} bind:exitTransition={Slides[selectedSlide].exitTransition} bind:transitionSpeed={Slides[selectedSlide].transitionSpeeds}/>
+{#if currentPres.slides.length > 0}
+<Inspector bind:slides={currentPres.slides} bind:selectedSlide={selectedSlide} bind:entryTransition={currentPres.slides[selectedSlide].entryTransition} bind:exitTransition={currentPres.slides[selectedSlide].exitTransition} bind:transitionSpeed={currentPres.slides[selectedSlide].transitionSpeeds}/>
 <BodySplit>
-    <Sidebar bind:slides={Slides} bind:selectedIndex={selectedSlide}/>
-    <BaseEditor bind:slides={Slides} bind:selectedIndex={selectedSlide}/>
+    <Sidebar bind:slides={currentPres.slides} bind:selectedIndex={selectedSlide}/>
+    <BaseEditor bind:slides={currentPres.slides} bind:selectedIndex={selectedSlide}/>
 </BodySplit>
+{/if}
 
 <svelte:head>
     <style>
