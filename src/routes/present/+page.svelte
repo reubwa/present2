@@ -3,8 +3,6 @@
 	import { currentPresentation } from '$lib/store.svelte';
 	import { SlideTypes } from '$lib/structs.svelte';
 
-	let shouldPrint = $state(false);
-
 	// Use the currentPresentation directly with proper defaults
 	let presentation = $state(currentPresentation);
 
@@ -49,9 +47,6 @@
 			const URLSearchParams = params.searchParams;
 
 			const isPrintMode = URLSearchParams.has('print-pdf');
-			if (isPrintMode) {
-				shouldPrint = true;
-			}
 
 			// Initialize with available plugins
 			const plugins = [RevealMarkdown, RevealHighlight];
@@ -84,6 +79,15 @@
 			console.log('Initializing Reveal...');
 			const deck = new Reveal(deckConfig);
 
+			// If in print mode, trigger print dialog after pdf-ready event fires
+			if (isPrintMode) {
+				console.log('Print mode detected, waiting for pdf-ready...');
+				deck.on('pdf-ready', () => {
+					console.log('Triggering print dialog...');
+					window.print();
+				});
+			}
+
 			// Don't await initialize if it causes issues
 			const initPromise = deck.initialize();
 
@@ -98,14 +102,6 @@
 
 			// Don't call sync or slide if they cause stack overflow
 			console.log('Ready to present');
-
-			// If in print mode, trigger print dialog after everything is loaded
-			if (isPrintMode) {
-				console.log('Print mode detected, preparing to print...');
-				await new Promise(resolve => setTimeout(resolve, 2000));
-				console.log('Triggering print dialog...');
-				window.print();
-			}
 
 			console.log('=== End Present page mount ===');
 		} catch (error) {
@@ -125,22 +121,6 @@
 		<link rel="stylesheet" href="/node_modules/reveal.js/dist/theme/white.css" id="theme">
 	{/if}
 	<link rel="stylesheet" href="/node_modules/reveal.js/plugin/highlight/monokai.css">
-	{#if shouldPrint}
-		<link rel="stylesheet" href="/node_modules/reveal.js/dist/print/pdf.css" type="text/css" media="print">
-		<style>
-			/* Additional print styles */
-			@media print {
-				body {
-					margin: 0;
-					padding: 0;
-				}
-				.reveal .slides section {
-					page-break-after: always;
-					page-break-inside: avoid;
-				}
-			}
-		</style>
-	{/if}
 </svelte:head>
 
 <div class="reveal">
