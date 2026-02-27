@@ -9,7 +9,7 @@
 
   let { slides = $bindable(), selectedIndex = $bindable() } = $props();
 </script>
-<div class="rounded-[10px] min-w-[82%] max-w-[82%] h-full p-2.5">
+<div class="rounded-[10px] min-w-[82%] max-w-[82%] max-h-screen p-2.5">
     {#if slides[selectedIndex].content.type === SlideTypes.TitleSubtitle}
         <TitleSubtitleEditor bind:title={slides[selectedIndex].title} bind:subtitle={slides[selectedIndex].content.strings[0]}/>
     {:else if slides[selectedIndex].content.type === SlideTypes.Markdown}

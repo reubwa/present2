@@ -4,8 +4,8 @@
 	let {strings = $bindable([]), title = $bindable()} = $props();
 	import { MoveUp, MoveDown, Trash2, CirclePlus } from '@lucide/svelte';
 </script>
-<div class="flex flex-col gap-2.5">
-	<input placeholder="Title" class="text-[100px] text-white text-left" bind:value={title}/>
+<input placeholder="Title" class="text-[100px] text-white text-left" bind:value={title}/>
+<div class="flex flex-col gap-2.5 overflow-y-auto max-h-[calc(100vh-375px)]">
 	{#each strings as bullet, i (i)}
 		{#if strings.length === 1}
 			<div class="flex flex-row gap-2.5 items-center">
@@ -44,7 +44,7 @@
 			{/if}
 		{/if}
 	{/each}
-	<button title="Add" onclick={()=>{
+	<button title="Add" class="sticky bottom-0 w-full flex justify-center" onclick={()=>{
 		strings.push("");
 	}}><CirclePlus/></button>
 </div>
@@ -54,4 +54,7 @@
         border: none;
         margin:10px;
     }
+		p, input {
+        color: white;
+		}
 </style>
