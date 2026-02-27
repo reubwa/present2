@@ -56,7 +56,7 @@
     </ToolbarGroup>
 </Toolbar>
 
-<AddSlideModal bind:show={addSlideModalVisibility} bind:result={addSlideResponse}/>
+<AddSlideModal bind:show={addSlideModalVisibility} bind:presentation={currentPres}/>
 <ChangeThemeModal bind:show={changeThemeModalVisibility} bind:result={currentPres.theme} bind:currentTheme={currentPres.theme} />
 <NewPresModal bind:show={newModalVisibility} bind:presentation={currentPres}/>
 <AboutModal bind:show={aboutModalVisibility} />

@@ -2,13 +2,13 @@
 	import { ListIcon, BookTextIcon, AArrowDownIcon, Image, SquareSigmaIcon, Code } from "@lucide/svelte";
 	import BaseDialog from "./BaseDialog.svelte";
 	import GalleryButton from "./GalleryButton.svelte";
-    import {SlideTypes} from "../../structs.svelte.ts";
+  import { Slide, SlideTypes } from '../../structs.svelte.ts';
 
-	let {show = $bindable(), result = $bindable()} = $props();
+	let {show = $bindable(), presentation = $bindable()} = $props();
 	let dialog: HTMLDialogElement | undefined = $state();
 
     function completeDialog(slidetype : SlideTypes){
-        result = slidetype;
+        presentation.addSlide(new Slide(slidetype));
         show = false;
     }
 </script>
