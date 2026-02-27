@@ -1,13 +1,1 @@
 @import 'tailwindcss';
-
-button{
-    background-color: rgb(46, 68, 68);
-    border-style: none;
-    border-radius: 10px;
-    color: white;
-    padding: 10px;
-}
-button:hover {
-    cursor: pointer;
-    background-color: rgb(66, 98, 98);
-}

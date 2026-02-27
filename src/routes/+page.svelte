@@ -11,8 +11,10 @@
 	import Toolbar from "$lib/components/toolbar/Toolbar.svelte";
     import ToolbarButton from "$lib/components/toolbar/ToolbarButton.svelte";
 	import ToolbarGroup from "$lib/components/toolbar/ToolbarGroup.svelte";
-    import { FilePlusCorner, HardDriveDownload, HardDriveUpload, Info, LayersPlus, PresentationIcon, SquareArrowRightExit, SwatchBook } from "@lucide/svelte";
-  import { Presentation, Slide, SlideContent, SlideTypes, BuiltInThemes, Transitions, TransitionSpeeds } from '../lib/structs.svelte.ts';
+    import { FilePlusCorner, HardDriveDownload, HardDriveUpload, Info, LayersPlus, PresentationIcon, Printer, SwatchBook } from "@lucide/svelte";
+  import { Slide, SlideContent, SlideTypes, BuiltInThemes, Transitions, TransitionSpeeds } from '../lib/structs.svelte';
+  import { currentPresentation } from '../lib/store.svelte';
+  import { goto } from '$app/navigation';
 
     interface JsonSlideData {
         title?: string;
@@ -36,33 +38,31 @@
 
     let selectedSlide = $state(0);
 
-    let currentPres = $state(new Presentation("New Presentation"));
-
     $effect(()=>{
-        if(currentPres.slides.length < 1){
-            currentPres.slides.push(new Slide(SlideTypes.TitleSubtitle));
+        if(currentPresentation.slides.length < 1){
+            currentPresentation.slides.push(new Slide(SlideTypes.TitleSubtitle));
         }
-        document.title = currentPres.title;
+        document.title = currentPresentation.title;
     });
 
   function savePresentation() {
       try {
           // Ensure all required properties exist and are valid
-          if (!currentPres || !currentPres.title || currentPres.title.trim() === '') {
+          if (!currentPresentation || !currentPresentation.title || currentPresentation.title.trim() === '') {
               alert('Cannot save: Presentation must have a title');
               return;
           }
 
-          if (!currentPres.slides || currentPres.slides.length === 0) {
+          if (!currentPresentation.slides || currentPresentation.slides.length === 0) {
               alert('Cannot save: Presentation must have at least one slide');
               return;
           }
 
           // Create a clean serializable object with no null properties
           const presData = {
-              title: currentPres.title.trim(),
-              theme: currentPres.theme || BuiltInThemes.White,
-              slides: currentPres.slides.map((slide, index) => ({
+              title: currentPresentation.title.trim(),
+              theme: currentPresentation.theme || BuiltInThemes.White,
+              slides: currentPresentation.slides.map((slide: Slide, index: number) => ({
                   title: slide.title || '',
                   number: slide.number || index + 1,
                   entryTransition: slide.entryTransition || Transitions.None,
@@ -81,7 +81,7 @@
 
           const link = document.createElement('a');
           link.href = url;
-          link.download = `${currentPres.title.trim().replace(/[^a-z0-9]/gi, '_')}.present`;
+          link.download = `${currentPresentation.title.trim().replace(/[^a-z0-9]/gi, '_')}.present`;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
@@ -168,13 +168,22 @@
                   ? json.theme
                   : BuiltInThemes.White;
 
-              currentPres = new Presentation(
-                  json.title.trim(),
-                  theme,
-                  validatedSlides
-              );
+              console.log('=== Opening presentation ===');
+              console.log('Validated slides count:', validatedSlides.length);
+              console.log('Theme:', theme);
+              console.log('Title:', json.title.trim());
+
+              // Update the reactive presentation object
+              currentPresentation.title = json.title.trim();
+              currentPresentation.theme = theme;
+              currentPresentation.slides = validatedSlides;
 
               selectedSlide = 0;
+
+              console.log('After update - currentPresentation:', currentPresentation);
+              console.log('After update - slides length:', currentPresentation.slides.length);
+              console.log('After update - first slide:', currentPresentation.slides[0]);
+              console.log('=== Presentation loaded ===');
 
           } catch (error) {
               console.error('Error opening presentation:', error);
@@ -197,23 +206,23 @@
         <ToolbarButton iconSize=32 icon={SwatchBook} caption="Theme" clickEvent={()=>{changeThemeModalVisibility=true}}/>
     </ToolbarGroup>
     <ToolbarGroup>
-        <ToolbarButton iconSize=32 icon={SquareArrowRightExit} caption="Export" clickEvent={()=>{}}/>
-        <ToolbarButton iconSize=32 icon={PresentationIcon} caption="Present" clickEvent={()=>{}}/>
+        <ToolbarButton iconSize=32 icon={Printer} caption="Print to PDF" clickEvent={()=>{goto('/present?print-pdf')}}/>
+        <ToolbarButton iconSize=32 icon={PresentationIcon} caption="Present" clickEvent={()=>{goto('/present')}}/>
     </ToolbarGroup>
     <ToolbarGroup>
         <ToolbarButton iconSize=32 icon={Info} caption="About" clickEvent={()=>aboutModalVisibility=true}/>
     </ToolbarGroup>
 </Toolbar>
 
-<AddSlideModal bind:show={addSlideModalVisibility} bind:presentation={currentPres} bind:selectedSlide = {selectedSlide}/>
-<ChangeThemeModal bind:show={changeThemeModalVisibility} bind:result={currentPres.theme}/>
-<NewPresModal bind:show={newModalVisibility} bind:presentation={currentPres}/>
+<AddSlideModal bind:show={addSlideModalVisibility} presentation={currentPresentation} bind:selectedSlide = {selectedSlide}/>
+<ChangeThemeModal bind:show={changeThemeModalVisibility} bind:result={currentPresentation.theme}/>
+<NewPresModal bind:show={newModalVisibility} presentation={currentPresentation}/>
 <AboutModal bind:show={aboutModalVisibility} />
-{#if currentPres.slides.length > 0}
-<Inspector bind:slides={currentPres.slides} bind:selectedSlide={selectedSlide} bind:entryTransition={currentPres.slides[selectedSlide].entryTransition} bind:exitTransition={currentPres.slides[selectedSlide].exitTransition} bind:transitionSpeed={currentPres.slides[selectedSlide].transitionSpeeds}/>
+{#if currentPresentation.slides.length > 0}
+<Inspector bind:slides={currentPresentation.slides} bind:selectedSlide={selectedSlide} bind:entryTransition={currentPresentation.slides[selectedSlide].entryTransition} bind:exitTransition={currentPresentation.slides[selectedSlide].exitTransition} bind:transitionSpeed={currentPresentation.slides[selectedSlide].transitionSpeeds}/>
 <BodySplit>
-    <Sidebar bind:slides={currentPres.slides} bind:selectedIndex={selectedSlide}/>
-    <BaseEditor bind:slides={currentPres.slides} bind:selectedIndex={selectedSlide}/>
+    <Sidebar bind:slides={currentPresentation.slides} bind:selectedIndex={selectedSlide}/>
+    <BaseEditor bind:slides={currentPresentation.slides} bind:selectedIndex={selectedSlide}/>
 </BodySplit>
 {/if}
 
@@ -221,6 +230,17 @@
     <style>
         body {
             background-color: rgb(12, 22, 22);
+        }
+        button{
+            background-color: rgb(46, 68, 68);
+            border-style: none;
+            border-radius: 10px;
+            color: white;
+            padding: 10px;
+        }
+        button:hover {
+            cursor: pointer;
+            background-color: rgb(66, 98, 98);
         }
     </style>
 </svelte:head>
