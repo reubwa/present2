@@ -41,6 +41,8 @@
         </button>
         <button title="Move Slide Up" onclick={()=>{
             if (selectedSlide > 0) {
+                slides[selectedSlide].number -= 1;
+                slides[selectedSlide - 1].number += 1;
                 arrayMoveMutable(slides, selectedSlide, selectedSlide - 1);
                 selectedSlide -= 1;
             }
@@ -49,6 +51,8 @@
         </button>
         <button title="Move Slide Down" onclick={()=>{
             if (selectedSlide < slides.length - 1) {
+                slides[selectedSlide].number += 1;
+                slides[selectedSlide + 1].number -= 1;
                 arrayMoveMutable(slides, selectedSlide, selectedSlide + 1);
                 selectedSlide += 1;
             }
