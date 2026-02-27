@@ -57,7 +57,7 @@
 </Toolbar>
 
 <AddSlideModal bind:show={addSlideModalVisibility} bind:presentation={currentPres}/>
-<ChangeThemeModal bind:show={changeThemeModalVisibility} bind:result={currentPres.theme} bind:currentTheme={currentPres.theme} />
+<ChangeThemeModal bind:show={changeThemeModalVisibility} bind:result={currentPres.theme}/>
 <NewPresModal bind:show={newModalVisibility} bind:presentation={currentPres}/>
 <AboutModal bind:show={aboutModalVisibility} />
 {#if currentPres.slides.length > 0}
