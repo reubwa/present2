@@ -40,14 +40,18 @@
             <FileDown/>
         </button>
         <button title="Move Slide Up" onclick={()=>{
-            selectedSlide.number -= 1;
-            arrayMoveMutable(slides, selectedSlide, selectedSlide-=1);
+            if (selectedSlide > 0) {
+                arrayMoveMutable(slides, selectedSlide, selectedSlide - 1);
+                selectedSlide -= 1;
+            }
         }}>
             <PanelTopClose/>
         </button>
         <button title="Move Slide Down" onclick={()=>{
-            selectedSlide.number += 1;
-            arrayMoveMutable(slides, selectedSlide, selectedSlide+=1);
+            if (selectedSlide < slides.length - 1) {
+                arrayMoveMutable(slides, selectedSlide, selectedSlide + 1);
+                selectedSlide += 1;
+            }
         }}>
             <PanelTopOpen/>
         </button>
