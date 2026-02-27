@@ -3,6 +3,37 @@
 	import { currentPresentation } from '$lib/store.svelte';
 	import { SlideTypes } from '$lib/structs.svelte';
 
+	// Import Reveal.js CSS as URLs so Vite includes them in the build output
+	import revealCss from 'reveal.js/dist/reveal.css?url';
+	import monokaiCss from 'reveal.js/plugin/highlight/monokai.css?url';
+	import beigeTheme from 'reveal.js/dist/theme/beige.css?url';
+	import bloodTheme from 'reveal.js/dist/theme/blood.css?url';
+	import blackTheme from 'reveal.js/dist/theme/black.css?url';
+	import leagueTheme from 'reveal.js/dist/theme/league.css?url';
+	import moonTheme from 'reveal.js/dist/theme/moon.css?url';
+	import nightTheme from 'reveal.js/dist/theme/night.css?url';
+	import serifTheme from 'reveal.js/dist/theme/serif.css?url';
+	import simpleTheme from 'reveal.js/dist/theme/simple.css?url';
+	import skyTheme from 'reveal.js/dist/theme/sky.css?url';
+	import solarizedTheme from 'reveal.js/dist/theme/solarized.css?url';
+	import whiteTheme from 'reveal.js/dist/theme/white.css?url';
+	import draculaTheme from 'reveal.js/dist/theme/dracula.css?url';
+
+	const themeUrls: Record<string, string> = {
+		beige: beigeTheme,
+		blood: bloodTheme,
+		black: blackTheme,
+		league: leagueTheme,
+		moon: moonTheme,
+		night: nightTheme,
+		serif: serifTheme,
+		simple: simpleTheme,
+		sky: skyTheme,
+		solarized: solarizedTheme,
+		white: whiteTheme,
+		dracula: draculaTheme
+	};
+
 	// Use the currentPresentation directly with proper defaults
 	let presentation = $state(currentPresentation);
 
@@ -114,13 +145,13 @@
 	});
 </script>
 <svelte:head>
-	<link rel="stylesheet" href="/node_modules/reveal.js/dist/reveal.css">
+	<link rel="stylesheet" href={revealCss}>
 	{#if presentation}
-		<link rel="stylesheet" href="/node_modules/reveal.js/dist/theme/{(presentation.theme || 'white').toLowerCase()}.css" id="theme">
+		<link rel="stylesheet" href={themeUrls[(presentation.theme || 'white').toLowerCase()] ?? whiteTheme} id="theme">
 	{:else}
-		<link rel="stylesheet" href="/node_modules/reveal.js/dist/theme/white.css" id="theme">
+		<link rel="stylesheet" href={whiteTheme} id="theme">
 	{/if}
-	<link rel="stylesheet" href="/node_modules/reveal.js/plugin/highlight/monokai.css">
+	<link rel="stylesheet" href={monokaiCss}>
 </svelte:head>
 
 <div class="reveal">
