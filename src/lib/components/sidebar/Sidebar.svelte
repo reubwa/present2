@@ -1,10 +1,9 @@
 <script lang="ts">
   import SidebarElement from "./SidebarElement.svelte";
-  let { slides = $bindable() } = $props();
-  let selectedIndex = $state(0);
+  let { slides = $bindable(), selectedIndex = $bindable() } = $props();
 </script>
-<div class="flex flex-col rounded-[10px] p-2.5 gap-2.5 text-white">
-    {#each slides as slide, i}
+<div class="flex flex-col rounded-[10px] p-2.5 gap-2.5 max-w-[15%] min-w-[15%] text-white">
+    {#each slides as slide, i (i)}
         <SidebarElement 
             name={slide.title} 
             type={slide.content.type} 

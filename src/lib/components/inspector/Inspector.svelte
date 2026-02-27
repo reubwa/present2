@@ -1,5 +1,7 @@
 <script lang="ts">
-    let {entryTransition = $bindable(), exitTransition = $bindable(), transitionSpeed = $bindable()} = $props();
+    import { arrayMoveMutable } from 'array-move';
+
+    let {entryTransition = $bindable(), exitTransition = $bindable(), transitionSpeed = $bindable(), slides = $bindable(), selectedSlide = $bindable()} = $props();
     import TransitionModal from "$lib/components/modals/TransitionModal.svelte";
 	import TransitionSpeedModal from "$lib/components/modals/TransitionSpeedModal.svelte";
 	import { TransitionModes } from "$lib/structs";
@@ -37,16 +39,20 @@
         <button title="Export Slide" onclick={()=>{}}>
             <FileDown/>
         </button>
-        <button title="Move Slide Up" onclick={()=>{}}>
+        <button title="Move Slide Up" onclick={()=>{
+            arrayMoveMutable(slides, selectedSlide, selectedSlide-=1);
+        }}>
             <PanelTopClose/>
         </button>
-        <button title="Move Slide Down" onclick={()=>{}}>
+        <button title="Move Slide Down" onclick={()=>{
+            arrayMoveMutable(slides, selectedSlide, selectedSlide+=1);
+        }}>
             <PanelTopOpen/>
         </button>
-        <button title="Duplicate Slide" onclick={()=>{}}>
+        <button title="Duplicate Slide" onclick={()=>{slides.push(slides[selectedSlide])}}>
             <Layers2/>
         </button>
-        <button title="Remove Slide" onclick={()=>{}}>
+        <button title="Remove Slide" onclick={()=>{slides.splice(selectedSlide,1)}}>
             <Trash2/>
         </button>
     </div>

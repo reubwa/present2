@@ -12,9 +12,10 @@
     import ToolbarButton from "$lib/components/toolbar/ToolbarButton.svelte";
 	import ToolbarGroup from "$lib/components/toolbar/ToolbarGroup.svelte";
     import { FilePlusCorner, HardDriveDownload, HardDriveUpload, Info, LayersPlus, Presentation, SquareArrowRightExit, SwatchBook } from "@lucide/svelte";
+  import { SlideTypes, Transitions, TransitionSpeeds } from '../lib/structs.ts';
 
     let addSlideModalVisibility = $state(false);
-	let addSlideResponse = $state("");
+	  let addSlideResponse = $state("");
 
     let changeThemeModalVisibility = $state(false);
     let changeThemeResponse = $state("");
@@ -23,6 +24,44 @@
     let newResponse = $state("");
 
     let aboutModalVisibility = $state(false);
+
+    let selectedSlide = $state(0);
+
+    let Slides = $state([
+        {
+            title: "Slide 1",
+            number: 1,
+            entryTransition: Transitions.None,
+            exitTransition: Transitions.None,
+            transitionSpeeds: TransitionSpeeds.Default,
+            content: {
+                type: SlideTypes.TextBullets,
+                strings: "This is the first slide"
+            }
+        },
+        {
+            title: "Slide 2",
+            number: 2,
+            entryTransition: Transitions.None,
+            exitTransition: Transitions.None,
+            transitionSpeeds: TransitionSpeeds.Default,
+            content: {
+                type: SlideTypes.Markdown,
+                strings: "This is the second slide"
+            }
+        },
+        {
+            title: "Slide 3",
+            number: 3,
+            entryTransition: Transitions.None,
+            exitTransition: Transitions.None,
+            transitionSpeeds: TransitionSpeeds.Default,
+            content: {
+                type: SlideTypes.TextBullets,
+                strings: "This is the third slide"
+            }
+        }
+    ]);
 </script>
 
 <Toolbar>
@@ -48,12 +87,10 @@
 <ChangeThemeModal bind:show={changeThemeModalVisibility} bind:result={changeThemeResponse} />
 <NewPresModal bind:show={newModalVisibility} bind:result={newResponse}/>
 <AboutModal bind:show={aboutModalVisibility} />
-<Inspector/>
+<Inspector bind:slides={Slides} bind:selectedSlide={selectedSlide} bind:entryTransition={Slides[selectedSlide].entryTransition} bind:exitTransition={Slides[selectedSlide].exitTransition} bind:transitionSpeed={Slides[selectedSlide].transitionSpeeds}/>
 <BodySplit>
-    <Sidebar/>
-    <BaseEditor>
-        <p>Edit Area</p>
-    </BaseEditor>
+    <Sidebar bind:slides={Slides} bind:selectedIndex={selectedSlide}/>
+    <BaseEditor bind:slides={Slides} bind:selectedIndex={selectedSlide}/>
 </BodySplit>
 
 <svelte:head>

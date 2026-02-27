@@ -1,8 +1,22 @@
 <script lang="ts">
-  let { children } = $props();
+  import { SlideTypes } from '../../../structs.ts';
+
+  let { slides = $bindable(), selectedIndex = $bindable() } = $props();
 </script>
-<div class="rounded-[10px] min-w-[75%] max-w-[75%] h-full p-2.5">
-    {@render children?.()}
+<div class="rounded-[10px] min-w-[82%] max-w-[82%] h-full p-2.5">
+    {#if slides[selectedIndex].content.type === SlideTypes.TitleSubtitle}
+        <!---placeholder--->
+    {:else if slides[selectedIndex].content.type === SlideTypes.Markdown}
+        <p>Markdown</p>
+    {:else if slides[selectedIndex].content.type === SlideTypes.Code}
+        <!---placeholder--->
+    {:else if slides[selectedIndex].content.type === SlideTypes.Image}
+        <!---placeholder--->
+    {:else if slides[selectedIndex].content.type === SlideTypes.Maths}
+        <!---placeholder--->
+    {:else if slides[selectedIndex].content.type === SlideTypes.TextBullets}
+        <p>Text Bullets</p>
+    {/if}
 </div>
 <style>
     div {
