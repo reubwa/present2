@@ -51,6 +51,12 @@
 		goto(resolve('/'))
 	}
 
+	function handleKeydown(event : KeyboardEvent) {
+		if (event.key === 'Escape' && isFullscreen) {
+			goUnFull();
+		}
+	}
+
 	function goUnFull(){
 		isFullscreen = false;
 		document.exitFullscreen();
@@ -181,6 +187,8 @@
 	{/if}
 	<link rel="stylesheet" href={monokaiCss}>
 </svelte:head>
+
+<svelte:window on:keydown={handleKeydown} />
 
 <div class="reveal relative">
 	<div class="absolute ml-2.5 mt-2.5 hover:cursor-pointer z-10" onclick={()=>{exit()}}>

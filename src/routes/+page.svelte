@@ -16,6 +16,7 @@
   import { currentPresentation } from '../lib/store.svelte';
   import { goto } from '$app/navigation';
   import { resolve } from '$app/paths';
+  import {shortcut, type ShortcutEventDetail} from '@svelte-put/shortcut';
 
     interface JsonSlideData {
         title?: string;
@@ -195,6 +196,36 @@
       input.click();
   }
 </script>
+
+<svelte:window use:shortcut={{
+    trigger:[{
+      key: 'b',
+      modifier: ['ctrl','meta'],
+      callback: openPresentation,
+    },
+    {
+        key: 'e',
+        modifier: ['ctrl','meta'],
+        callback: savePresentation,
+    },
+    {
+      key: 'i',
+      modifier: ['ctrl','meta'],
+      callback: ()=>{newModalVisibility=true},
+    },
+    {
+      key: 'k',
+      modifier: ['ctrl','meta'],
+      callback: ()=>{addSlideModalVisibility=true},
+    },
+    {
+      key: 'u',
+      modifier: ['ctrl','meta'],
+      callback: ()=>{goto(resolve('/present'))},
+    }
+    ],
+}}
+/>
 
 <Toolbar>
     <ToolbarGroup>
