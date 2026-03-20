@@ -15,7 +15,7 @@
   import { Slide, SlideContent, SlideTypes, BuiltInThemes, Transitions, TransitionSpeeds } from '../lib/structs.svelte';
   import { currentPresentation } from '../lib/store.svelte';
   import { goto } from '$app/navigation';
-  import { base } from '$app/paths';
+  import { resolve } from '$app/paths';
 
     interface JsonSlideData {
         title?: string;
@@ -207,8 +207,8 @@
         <ToolbarButton iconSize=32 icon={SwatchBook} caption="Theme" clickEvent={()=>{changeThemeModalVisibility=true}}/>
     </ToolbarGroup>
     <ToolbarGroup>
-        <ToolbarButton iconSize=32 icon={Printer} caption="Print to PDF" clickEvent={()=>{goto(base + '/present?print-pdf')}}/>
-        <ToolbarButton iconSize=32 icon={PresentationIcon} caption="Present" clickEvent={()=>{goto(base + '/present')}}/>
+        <ToolbarButton iconSize=32 icon={Printer} caption="Print to PDF" clickEvent={()=>{goto(resolve('/present?print-pdf'))}}/>
+        <ToolbarButton iconSize=32 icon={PresentationIcon} caption="Present" clickEvent={()=>{goto(resolve('/present'))}}/>
     </ToolbarGroup>
     <ToolbarGroup>
         <ToolbarButton iconSize=32 icon={Info} caption="About" clickEvent={()=>aboutModalVisibility=true}/>

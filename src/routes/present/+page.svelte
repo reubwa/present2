@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { currentPresentation } from '$lib/store.svelte';
 	import { SlideTypes } from '$lib/structs.svelte';
+	import { X } from '@lucide/svelte';
 
 	// Import Reveal.js CSS as URLs so Vite includes them in the build output
 	import revealCss from 'reveal.js/dist/reveal.css?url';
@@ -18,6 +19,8 @@
 	import solarizedTheme from 'reveal.js/dist/theme/solarized.css?url';
 	import whiteTheme from 'reveal.js/dist/theme/white.css?url';
 	import draculaTheme from 'reveal.js/dist/theme/dracula.css?url';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 
 	const themeUrls: Record<string, string> = {
 		beige: beigeTheme,
@@ -154,7 +157,10 @@
 	<link rel="stylesheet" href={monokaiCss}>
 </svelte:head>
 
-<div class="reveal">
+<div class="reveal relative">
+	<div class="absolute ml-2.5 mt-2.5 hover:cursor-pointer z-10" onclick={()=>{goto(resolve('/'))}}>
+		<X/>
+	</div>
 	<div class="slides">
 		{#if presentation && presentation.slides}
 			{#each presentation.slides as slide, i (i)}

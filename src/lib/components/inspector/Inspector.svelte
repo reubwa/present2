@@ -148,8 +148,8 @@
 
 
 </script>
-<div class="flex flex-col rounded-[10px] p-2.5 gap-2.5 text-white ml-1.25 mt-2 max-w-[48.5%]">
-    <div class="flex flex-row gap-2.5">
+<div class="flex flex-col rounded-[10px] p-2.5 gap-2.5 text-white ml-1.25 mt-2 max-w-[97.5%] flex-wrap">
+    <div class="flex flex-row gap-2.5 flex-wrap">
         <button title="Entry Transition" class="flex flex-row gap-2.5" onclick={()=>{
             transitionModal = TransitionModes.Entry;
             transitionModalVisibility = true;
