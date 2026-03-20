@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { currentPresentation } from '$lib/store.svelte';
 	import { SlideTypes } from '$lib/structs.svelte';
-	import { X } from '@lucide/svelte';
+	import { X, Fullscreen } from '@lucide/svelte';
 
 	// Import Reveal.js CSS as URLs so Vite includes them in the build output
 	import revealCss from 'reveal.js/dist/reveal.css?url';
@@ -37,10 +37,35 @@
 		dracula: draculaTheme
 	};
 
+	let isFullscreen = $state(false);
+
+	function goFull(){
+		isFullscreen = true;
+		document.documentElement.requestFullscreen();
+	}
+
+	function exit() {
+		if(isFullscreen){
+			goUnFull();
+		}
+		goto(resolve('/'))
+	}
+
+	function goUnFull(){
+		isFullscreen = false;
+		document.exitFullscreen();
+	}
+
 	// Use the currentPresentation directly with proper defaults
 	let presentation = $state(currentPresentation);
 
 	onMount(async () => {
+
+		if(presentation.slides.length === 1 && presentation.slides[0].title === ""){
+			alert("In order to present, you'll need to add some content");
+			exit();
+		}
+
 		console.log('=== Present page mounted ===');
 		console.log('Raw currentPresentation:', currentPresentation);
 		console.log('Raw currentPresentation.title:', currentPresentation.title);
@@ -158,8 +183,11 @@
 </svelte:head>
 
 <div class="reveal relative">
-	<div class="absolute ml-2.5 mt-2.5 hover:cursor-pointer z-10" onclick={()=>{goto(resolve('/'))}}>
+	<div class="absolute ml-2.5 mt-2.5 hover:cursor-pointer z-10" onclick={()=>{exit()}}>
 		<X/>
+	</div>
+	<div class="absolute ml-8.5 mt-2.5 hover:cursor-pointer z-10" onclick={()=>{isFullscreen ? goUnFull() : goFull()}}>
+		<Fullscreen/>
 	</div>
 	<div class="slides">
 		{#if presentation && presentation.slides}
