@@ -3,7 +3,10 @@
   "short_name": "Present",
   "start_url": "/present2",
   "display": "standalone",
-  "display_override": ["tabbed"],
+  "display_override": [
+    "tabbed",
+    "window-controls-overlay"
+  ],
   "background_color": "#0c1616",
   "theme_color": "#ff4c6c",
   "icons": [
