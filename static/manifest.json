@@ -7,7 +7,7 @@
 	"theme_color": "#ff4c6c",
 	"icons": [
 		{
-			"src": "icons/present-iOS-Default-1024x1024@1x.png",
+			"src": "/present2/icons/present-iOS-Default-1024x1024@1x.png",
 			"sizes": "1024x1024",
 			"type": "image/png",
 			"purpose": "any"
