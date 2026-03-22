@@ -11,12 +11,6 @@
 			"sizes": "1024x1024",
 			"type": "image/png",
 			"purpose": "any"
-		},
-		{
-			"src": "icons/present-watchOS-Default-1088x1088@1x.png",
-			"sizes": "1088x1088",
-			"type": "image/png",
-			"purpose": "maskable"
 		}
 	]
 }
