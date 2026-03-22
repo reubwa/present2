@@ -1,22 +1,32 @@
 {
-	"name": "Present",
-	"short_name": "Present",
-	"start_url": "/",
-	"display": "standalone",
-	"background_color": "#0c1616",
-	"theme_color": "#ff4c6c",
-	"icons": [
-		{
-			"src": "/icons/present-iOS-Default-1024x1024@1x.png",
-			"sizes": "1024x1024",
-			"type": "image/png",
-			"purpose": "any"
-		},
-		{
-			"src": "/icons/present-watchOS-Default-1088x1088@1x.png",
-			"sizes": "1088x1088",
-			"type": "image/png",
-			"purpose": "maskable"
-		}
-	]
+  "name": "Present",
+  "short_name": "Present",
+  "start_url": "/present2",
+  "display": "standalone",
+  "display_override": ["tabbed"],
+  "background_color": "#0c1616",
+  "theme_color": "#ff4c6c",
+  "icons": [
+    {
+      "src": "icons/present-iOS-Default-1024x1024@1x.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/present-watchOS-Default-1088x1088@1x.png",
+      "sizes": "1088x1088",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "id": "reubwa.present",
+  "description": "Let's face it, a lot of presentations consist of a title slide and a few slides with bullet points. But tools like PowerPoint have a ton of other features and power that can get in the way and make life unnecessarily complicated for a large number of people, so Present aims to simply this by enabling the user to quickly choose from default slide types and add their content.",
+  "dir": "ltr",
+  "scope": "/present2",
+  "lang": "en",
+  "orientation": "landscape",
+  "categories": [
+    "productivity"
+  ]
 }
