@@ -43,11 +43,23 @@
   ],
   "screenshots": [
     {
-      "src": "https://reubwa.github.io/present2.jpeg",
-      "sizes": "1750x787",
+      "src": "/present2/pwa-screenshots/ts.png",
+      "sizes": "2880x1704",
       "form_factor": "wide",
-      "type": "image/jpeg"
-    }
+      "type": "image/png"
+    },
+		{
+			"src": "/present2/pwa-screenshots/ns.png",
+			"sizes": "2880x1704",
+			"form_factor": "wide",
+			"type": "image/png"
+		},
+		{
+			"src": "/present2/pwa-screenshots/is.png",
+			"sizes": "2880x1704",
+			"form_factor": "wide",
+			"type": "image/png"
+		}
   ],
 	"file_handlers": [
 		{
