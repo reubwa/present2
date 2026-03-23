@@ -157,7 +157,7 @@
             <Theater/>
             {entryTransition}
         </button>
-        <button title="Entry Transition" class="flex flex-row gap-2.5" onclick={()=>{
+        <button title="Exit Transition" class="flex flex-row gap-2.5" onclick={()=>{
             transitionModal = TransitionModes.Exit;
             transitionModalVisibility = true;
         }}>
