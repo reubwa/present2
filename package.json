@@ -38,6 +38,7 @@
 	},
 	"dependencies": {
 		"@lucide/svelte": "^0.575.0",
+		"@types/wicg-web-app-launch": "^2023.1.4",
 		"array-move": "^4.0.0",
 		"reveal.js": "^5.2.1",
 		"svelte2tsx": "^0.7.51"

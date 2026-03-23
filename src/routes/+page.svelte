@@ -18,7 +18,8 @@
 
     import { goto } from '$app/navigation';
     import { resolve } from '$app/paths';
-    import {shortcut, type ShortcutEventDetail} from '@svelte-put/shortcut';
+    import {shortcut} from '@svelte-put/shortcut';
+    import {onMount} from 'svelte';
 
     interface JsonSlideData {
         title?: string;
@@ -99,90 +100,95 @@
     onMount(() => {
         // Check if the browser supports the Launch Queue API
         if ('launchQueue' in window) {
-            window.launchQueue.setConsumer(async (launchParams) => {
-                // launchParams.files is an array of FileSystemFileHandle objects
+            // @ts-ignore - The Launch Handler API may not be fully typed in your setup
+            window.launchQueue?.setConsumer(async (launchParams: any) => {
+                // launchParams.files is an array of FileSystemHandle objects
                 if (launchParams.files.length > 0) {
-                    const fileHandle = launchParams.files[0];
-                    const file = await fileHandle.getFile();
+                    // Cast the handle to FileSystemFileHandle to access the getFile method
+                    const fileHandle = launchParams.files[0] as FileSystemFileHandle;
 
-                    if (!file) {
-                        console.warn('No file selected');
-                        return;
-                    }
+                    if (fileHandle.kind === 'file') {
+                        const file = await fileHandle.getFile();
 
-                    try {
-                        const text = await file.text();
-                        if (!text || text.trim() === '') {
-                            throw new Error('File is empty');
+                        if (!file) {
+                            console.warn('No file selected');
+                            return;
                         }
 
-                        const json = JSON.parse(text);
-                        if (!json || typeof json !== 'object') {
-                            throw new Error('Invalid file format: not a valid JSON object');
+                        try {
+                            const text = await file.text();
+                            if (!text || text.trim() === '') {
+                                throw new Error('File is empty');
+                            }
+
+                            const json = JSON.parse(text);
+                            if (!json || typeof json !== 'object') {
+                                throw new Error('Invalid file format: not a valid JSON object');
+                            }
+
+                            if (!json.title || typeof json.title !== 'string' || json.title.trim() === '') {
+                                throw new Error('Invalid file format: missing or invalid title');
+                            }
+
+                            if (!Array.isArray(json.slides)) {
+                                throw new Error('Invalid file format: slides must be an array');
+                            }
+
+                            const validatedSlides = json.slides.map((s: JsonSlideData, index: number) => {
+                                const slideType = (s?.content?.type && Object.values(SlideTypes).includes(s.content.type))
+                                  ? s.content.type
+                                  : SlideTypes.TitleSubtitle;
+
+                                const slideTitle = (typeof s?.title === 'string') ? s.title : '';
+                                const slideNumber = (typeof s?.number === 'number') ? s.number : index + 1;
+
+                                const entryTransition = (s?.entryTransition && Object.values(Transitions).includes(s.entryTransition))
+                                  ? s.entryTransition
+                                  : Transitions.None;
+
+                                const exitTransition = (s?.exitTransition && Object.values(Transitions).includes(s.exitTransition))
+                                  ? s.exitTransition
+                                  : Transitions.None;
+
+                                const transitionSpeeds = (s?.transitionSpeeds && Object.values(TransitionSpeeds).includes(s.transitionSpeeds))
+                                  ? s.transitionSpeeds
+                                  : TransitionSpeeds.Default;
+
+                                const strings = Array.isArray(s?.content?.strings) ? s.content.strings : [];
+
+                                return new Slide(
+                                  slideType,
+                                  slideTitle,
+                                  new SlideContent(slideType, strings),
+                                  slideNumber,
+                                  entryTransition,
+                                  exitTransition,
+                                  transitionSpeeds
+                                );
+                            });
+
+                            const theme = (json.theme && Object.values(BuiltInThemes).includes(json.theme))
+                              ? json.theme
+                              : BuiltInThemes.White;
+
+                            console.log('=== Opening presentation ===');
+                            console.log('Validated slides count:', validatedSlides.length);
+                            console.log('Theme:', theme);
+                            console.log('Title:', json.title.trim());
+
+                            selectedSlide = 0;
+                            currentPresentation.title = json.title.trim();
+                            currentPresentation.theme = theme;
+                            currentPresentation.slides = validatedSlides;
+
+                            console.log('After update - currentPresentation:', currentPresentation);
+                            console.log('After update - slides length:', currentPresentation.slides.length);
+                            console.log('After update - first slide:', currentPresentation.slides[0]);
+                            console.log('=== Presentation loaded ===');
+                        } catch (error) {
+                            console.error('Error opening presentation:', error);
+                            alert(`Failed to open presentation: ${error instanceof Error ? error.message : 'Unknown error'}`);
                         }
-
-                        if (!json.title || typeof json.title !== 'string' || json.title.trim() === '') {
-                            throw new Error('Invalid file format: missing or invalid title');
-                        }
-
-                        if (!Array.isArray(json.slides)) {
-                            throw new Error('Invalid file format: slides must be an array');
-                        }
-
-                        const validatedSlides = json.slides.map((s: JsonSlideData, index: number) => {
-                            const slideType = (s?.content?.type && Object.values(SlideTypes).includes(s.content.type))
-                              ? s.content.type
-                              : SlideTypes.TitleSubtitle;
-
-                            const slideTitle = (typeof s?.title === 'string') ? s.title : '';
-                            const slideNumber = (typeof s?.number === 'number') ? s.number : index + 1;
-
-                            const entryTransition = (s?.entryTransition && Object.values(Transitions).includes(s.entryTransition))
-                              ? s.entryTransition
-                              : Transitions.None;
-
-                            const exitTransition = (s?.exitTransition && Object.values(Transitions).includes(s.exitTransition))
-                              ? s.exitTransition
-                              : Transitions.None;
-
-                            const transitionSpeeds = (s?.transitionSpeeds && Object.values(TransitionSpeeds).includes(s.transitionSpeeds))
-                              ? s.transitionSpeeds
-                              : TransitionSpeeds.Default;
-
-                            const strings = Array.isArray(s?.content?.strings) ? s.content.strings : [];
-
-                            return new Slide(
-                              slideType,
-                              slideTitle,
-                              new SlideContent(slideType, strings),
-                              slideNumber,
-                              entryTransition,
-                              exitTransition,
-                              transitionSpeeds
-                            );
-                        });
-
-                        const theme = (json.theme && Object.values(BuiltInThemes).includes(json.theme))
-                          ? json.theme
-                          : BuiltInThemes.White;
-
-                        console.log('=== Opening presentation ===');
-                        console.log('Validated slides count:', validatedSlides.length);
-                        console.log('Theme:', theme);
-                        console.log('Title:', json.title.trim());
-
-                        selectedSlide = 0;
-                        currentPresentation.title = json.title.trim();
-                        currentPresentation.theme = theme;
-                        currentPresentation.slides = validatedSlides;
-
-                        console.log('After update - currentPresentation:', currentPresentation);
-                        console.log('After update - slides length:', currentPresentation.slides.length);
-                        console.log('After update - first slide:', currentPresentation.slides[0]);
-                        console.log('=== Presentation loaded ===');
-                    } catch (error) {
-                        console.error('Error opening presentation:', error);
-                        alert(`Failed to open presentation: ${error instanceof Error ? error.message : 'Unknown error'}`);
                     }
                 }
             });
