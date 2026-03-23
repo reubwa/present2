@@ -7,15 +7,12 @@
     import ChangeThemeModal from "$lib/components/modals/ChangeThemeModal.svelte";
     import NewPresModal from "$lib/components/modals/NewPresModal.svelte";
     import Sidebar from "$lib/components/sidebar/Sidebar.svelte";
-
     import Toolbar from "$lib/components/toolbar/Toolbar.svelte";
     import ToolbarButton from "$lib/components/toolbar/ToolbarButton.svelte";
     import ToolbarGroup from "$lib/components/toolbar/ToolbarGroup.svelte";
     import { FilePlusCorner, HardDriveDownload, HardDriveUpload, Info, LayersPlus, PresentationIcon, Printer, SwatchBook } from "@lucide/svelte";
-
     import { Slide, SlideContent, SlideTypes, BuiltInThemes, Transitions, TransitionSpeeds } from '../lib/structs.svelte';
     import { currentPresentation } from '../lib/store.svelte';
-
     import { goto } from '$app/navigation';
     import { resolve } from '$app/paths';
     import {shortcut} from '@svelte-put/shortcut';
@@ -52,7 +49,7 @@
         document.title = currentPresentation.title;
     });
 
-    function savePresentation() {
+    async function savePresentation() {
         try {
             if (!currentPresentation || !currentPresentation.title || currentPresentation.title.trim() === '') {
                 alert('Cannot save: Presentation must have a title');
@@ -81,16 +78,40 @@
             };
 
             const jsonString = JSON.stringify(presData, null, 2);
-            const blob = new Blob([jsonString], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `${currentPresentation.title.trim().replace(/[^a-z0-9]/gi, '_')}.present`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            const defaultFileName = `${currentPresentation.title.trim().replace(/[^a-z0-9]/gi, '_')}.present`;
 
-            URL.revokeObjectURL(url);
+            if ('showSaveFilePicker' in window) {
+                try {
+                    // @ts-ignore - Some TS configs might not have File System Access API types
+                    const handle = await window.showSaveFilePicker({
+                        suggestedName: defaultFileName,
+                        types: [{
+                            description: 'Present Presentation',
+                            accept: { 'application/json': ['.present'] },
+                        }],
+                    });
+                    const writable = await handle.createWritable();
+                    await writable.write(jsonString);
+                    await writable.close();
+                } catch (err: any) {
+                    // Ignore the AbortError which occurs when the user cancels the save dialogue
+                    if (err.name !== 'AbortError') {
+                        throw err;
+                    }
+                }
+            } else {
+                // Fallback for browsers that do not support the File System Access API
+                const blob = new Blob([jsonString], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = defaultFileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                URL.revokeObjectURL(url);
+            }
         } catch (error) {
             console.error('Error saving presentation:', error);
             alert(`Failed to save presentation: ${error instanceof Error ? error.message : 'Unknown error'}`);
