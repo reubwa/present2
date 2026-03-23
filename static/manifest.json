@@ -3,10 +3,17 @@
   "short_name": "Present",
   "start_url": "/present2",
   "display": "standalone",
-  "display_override": [
-    "tabbed",
-    "window-controls-overlay"
-  ],
+  "display_override": ["tabbed"],
+  "tab_strip": {
+    "home_tab": {
+      "scope_patterns": [
+        {"pathname": "/present2"}
+      ]
+    },
+    "new_tab_button": {
+      "url": "/present2"
+    }
+  }
   "background_color": "#0c1616",
   "theme_color": "#ff4c6c",
   "icons": [
