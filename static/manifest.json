@@ -3,7 +3,7 @@
   "short_name": "Present",
   "start_url": "/present2",
   "display": "standalone",
-  "display_override": ["tabbed"],
+  "display_override": ["tabbed","window-controls-overlay"],
   "tab_strip": {
     "home_tab": {
       "scope_patterns": [
