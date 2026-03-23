@@ -38,5 +38,19 @@
   "orientation": "landscape",
   "categories": [
     "productivity"
+  ],
+  "shortcuts": [
+    {
+      "name": "New Presentation",
+      "url": "/present2",
+      "description": "Create a new Present presentation"
+    },
+  "screenshots": [
+    {
+      "src": "https://reubwa.github.io/present2.jpeg",
+      "sizes": "1750x787",
+      "form_factor": "wide",
+      "type": "image/jpg"
+    }
   ]
 }
