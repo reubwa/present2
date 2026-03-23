@@ -48,5 +48,13 @@
       "form_factor": "wide",
       "type": "image/jpeg"
     }
-  ]
+  ],
+	"file_handlers": [
+		{
+			"action": "/present2",
+			"accept": {
+				"application/json": [".present"]
+			}
+		}
+	]
 }
