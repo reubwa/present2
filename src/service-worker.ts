@@ -6,20 +6,22 @@ declare let self: ServiceWorkerGlobalScope;
 import { assets, immutable, prerendered } from '$app/manifest';
 import { version } from '$app/env';
 
-// Create a unique cache name based on the deployment version
 const CACHE_NAME = `cache-${version}`;
 
-type PrerenderedEntry = string | { path: string };
+// e.g. "/present2/" on GitHub Pages, "/" in dev. Always ends with a slash.
+const BASE = new URL(self.registration.scope).pathname;
 
-const prerenderedPaths: string[] = (Array.from(prerendered) as PrerenderedEntry[]).map(
-	(entry): string => (typeof entry === 'string' ? entry : entry.path)
-);
+type Entry = string | { path: string };
 
-// Create a list of all application assets to cache as URL strings
+const toPath = (entry: Entry): string => {
+	const p = typeof entry === 'string' ? entry : entry.path;
+	return p.startsWith('/') ? p : BASE + p;
+};
+
 const ASSETS: string[] = [
-	...immutable, // the app's compiled JS/CSS
-	...assets, // everything in the static directory
-	...prerenderedPaths // all prerendered pages and data
+	...Array.from(immutable as Iterable<Entry>, toPath),
+	...Array.from(assets as Iterable<Entry>, toPath),
+	...Array.from(prerendered as Iterable<Entry>, toPath)
 ];
 
 self.addEventListener('install', (event) => {
@@ -85,7 +87,7 @@ self.addEventListener('fetch', (event) => {
 			// If navigating offline and the specific page isn't in the cache,
 			// fall back to the root application shell to allow client-side routing to take over
 			if (event.request.mode === 'navigate') {
-				const rootResponse = await cache.match('/');
+				const rootResponse = await cache.match(BASE);
 				if (rootResponse) {
 					return rootResponse;
 				}
