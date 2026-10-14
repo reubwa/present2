@@ -3,16 +3,23 @@
 
 declare let self: ServiceWorkerGlobalScope;
 
-import { build, files, prerendered, version } from '$service-worker';
+import { assets, immutable, prerendered } from '$app/manifest';
+import { version } from '$app/env';
 
 // Create a unique cache name based on the deployment version
 const CACHE_NAME = `cache-${version}`;
 
-// Create a list of all application assets to cache
-const ASSETS = [
-	...build, // the app's compiled JS/CSS
-	...files, // everything in the static directory
-	...prerendered // all prerendered pages and data (essential for offline HTML)
+type PrerenderedEntry = string | { path: string };
+
+const prerenderedPaths: string[] = (Array.from(prerendered) as PrerenderedEntry[]).map(
+	(entry): string => (typeof entry === 'string' ? entry : entry.path)
+);
+
+// Create a list of all application assets to cache as URL strings
+const ASSETS: string[] = [
+	...immutable, // the app's compiled JS/CSS
+	...assets, // everything in the static directory
+	...prerenderedPaths // all prerendered pages and data
 ];
 
 self.addEventListener('install', (event) => {
@@ -50,6 +57,7 @@ self.addEventListener('fetch', (event) => {
 		// or prerendered pages can always be safely served from the cache
 		if (ASSETS.includes(url.pathname)) {
 			const cachedResponse = await cache.match(event.request);
+
 			if (cachedResponse) {
 				return cachedResponse;
 			}
@@ -69,6 +77,7 @@ self.addEventListener('fetch', (event) => {
 		} catch (error) {
 			// If the network request fails (e.g., offline behaviour), try serving from cache
 			const cachedResponse = await cache.match(event.request);
+
 			if (cachedResponse) {
 				return cachedResponse;
 			}
